@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#101a16" />
+    <meta name="description" content="Nourish – dein persönlicher Ernährungs-Tracker" />
+    <title>Nourish – Ernährungs-Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#" aria-label="Nourish Startseite">
+          <span class="brand-mark">N</span>
+          <span>Nourish</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Hauptnavigation">
+          <button class="nav-item active" data-section="dashboard"><span>◫</span><span data-i18n="navToday">Heute</span></button>
+          <button class="nav-item" data-section="diary"><span>≡</span><span data-i18n="navDiary">Tagebuch</span></button>
+          <button class="nav-item" data-section="insights"><span>↗</span><span data-i18n="navInsights">Fortschritt</span></button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <button class="nav-item" id="openGoalsBtn"><span>◎</span><span data-i18n="goals">Ziele</span></button>
+          <div class="profile-card">
+            <div class="avatar">AN</div>
+            <div><strong>Ahmad</strong><small data-i18n="localProfile">Lokales Profil</small></div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow" data-i18n="eyebrow">DEIN TAGESPLAN</p>
+            <h1 data-i18n="greeting">Guten Tag, Ahmad</h1>
+          </div>
+          <div class="header-actions">
+            <select id="languageSelect" class="select-compact" aria-label="Sprache">
+              <option value="de">DE</option>
+              <option value="en">EN</option>
+              <option value="ar">AR</option>
+            </select>
+            <button id="themeToggle" class="icon-btn" aria-label="Theme wechseln">☾</button>
+            <button id="addFoodTop" class="primary-btn"><span>＋</span><span data-i18n="addFood">Lebensmittel</span></button>
+          </div>
+        </header>
+
+        <section class="date-switcher" aria-label="Datum auswählen">
+          <button id="prevDay" class="icon-btn">‹</button>
+          <button id="dateButton" class="date-button">
+            <span id="dateLabel">Heute</span>
+            <strong id="dateFull"></strong>
+          </button>
+          <input type="date" id="datePicker" hidden />
+          <button id="nextDay" class="icon-btn">›</button>
+        </section>
+
+        <section id="dashboardSection" class="page-section active">
+          <div class="dashboard-grid">
+            <article class="card calorie-card">
+              <div class="card-heading">
+                <div><span class="card-kicker" data-i18n="dailyGoal">TAGESZIEL</span><h2 data-i18n="calories">Kalorien</h2></div>
+                <button class="more-btn" id="calorieSettings">•••</button>
+              </div>
+              <div class="calorie-layout">
+                <div class="calorie-ring" id="calorieRing">
+                  <div class="ring-center"><strong id="remainingCalories">2.200</strong><span data-i18n="remaining">übrig</span></div>
+                </div>
+                <div class="calorie-details">
+                  <div><span class="legend-dot consumed"></span><p data-i18n="consumed">Gegessen</p><strong id="consumedCalories">0 kcal</strong></div>
+                  <div><span class="legend-dot planned"></span><p data-i18n="planned">Geplant</p><strong id="plannedCalories">0 kcal</strong></div>
+                  <div><span class="legend-dot burned"></span><p data-i18n="goalLabel">Dein Ziel</p><strong id="goalCalories">2.200 kcal</strong></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="card macro-card">
+              <div class="card-heading"><div><span class="card-kicker" data-i18n="nutrients">NÄHRWERTE</span><h2 data-i18n="macros">Makros</h2></div></div>
+              <div id="macroList" class="macro-list"></div>
+            </article>
+
+            <article class="card water-card">
+              <div class="water-copy">
+                <span class="water-icon">⌁</span>
+                <div><span class="card-kicker" data-i18n="hydration">HYDRATION</span><h2 data-i18n="water">Wasser</h2><p><strong id="waterAmount">0,0</strong> / <span id="waterGoal">2,5</span> L</p></div>
+              </div>
+              <div class="water-progress"><span id="waterProgress"></span></div>
+              <div class="water-actions">
+                <button class="secondary-btn water-add" data-amount="0.25">＋ 250 ml</button>
+                <button class="secondary-btn water-add" data-amount="0.5">＋ 500 ml</button>
+                <button id="waterReset" class="icon-btn" title="Zurücksetzen">↺</button>
+              </div>
+            </article>
+
+            <article class="card streak-card">
+              <span class="streak-icon">✦</span>
+              <div><span class="card-kicker" data-i18n="consistency">KONSTANZ</span><h2><span id="streakDays">0</span> <span data-i18n="days">Tage</span></h2><p data-i18n="streakText">Tracke täglich und baue deine Serie auf.</p></div>
+            </article>
+          </div>
+
+          <section class="diary-block">
+            <div class="section-heading">
+              <div><span class="card-kicker" data-i18n="foodDiary">ERNÄHRUNGSTAGEBUCH</span><h2 data-i18n="todaysMeals">Deine Mahlzeiten</h2></div>
+              <div class="filter-group">
+                <button class="filter-btn active" data-filter="all" data-i18n="all">Alle</button>
+                <button class="filter-btn" data-filter="eaten" data-i18n="eaten">Gegessen</button>
+                <button class="filter-btn" data-filter="planned" data-i18n="planned">Geplant</button>
+              </div>
+            </div>
+            <div id="mealGroups" class="meal-groups"></div>
+          </section>
+
+          <section class="card weekly-card">
+            <div class="card-heading">
+              <div><span class="card-kicker" data-i18n="lastSevenDays">LETZTE 7 TAGE</span><h2 data-i18n="weeklyOverview">Wochenübersicht</h2></div>
+              <div class="weekly-average"><span data-i18n="dailyAverage">Ø pro Tag</span><strong id="weeklyAverage">0 kcal</strong></div>
+            </div>
+            <div id="weeklyChart" class="weekly-chart"></div>
+          </section>
+        </section>
+
+        <section id="diarySection" class="page-section">
+          <div class="empty-page card"><span>≡</span><h2 data-i18n="diaryTitle">Dein Ernährungstagebuch</h2><p data-i18n="diaryDescription">Alle Einträge findest du in der Tagesansicht.</p><button class="primary-btn back-dashboard" data-i18n="backToday">Zur Tagesansicht</button></div>
+        </section>
+
+        <section id="insightsSection" class="page-section">
+          <div class="empty-page card"><span>↗</span><h2 data-i18n="insightsTitle">Dein Fortschritt</h2><p data-i18n="insightsDescription">Tracke mehrere Tage, um hier deine Entwicklung zu sehen.</p><button class="primary-btn back-dashboard" data-i18n="backToday">Zur Tagesansicht</button></div>
+        </section>
+      </main>
+    </div>
+
+    <nav class="mobile-nav">
+      <button class="active" data-section="dashboard"><span>◫</span><small data-i18n="navToday">Heute</small></button>
+      <button data-section="diary"><span>≡</span><small data-i18n="navDiary">Tagebuch</small></button>
+      <button class="mobile-add" id="mobileAdd">＋</button>
+      <button data-section="insights"><span>↗</span><small data-i18n="navInsights">Fortschritt</small></button>
+      <button id="mobileGoals"><span>◎</span><small data-i18n="goals">Ziele</small></button>
+    </nav>
+
+    <dialog id="foodDialog" class="app-dialog">
+      <form id="foodForm" method="dialog">
+        <div class="dialog-header"><div><span class="card-kicker" data-i18n="newEntry">NEUER EINTRAG</span><h2 id="foodDialogTitle" data-i18n="addFoodTitle">Lebensmittel hinzufügen</h2></div><button type="button" class="close-dialog icon-btn">×</button></div>
+        <input type="hidden" id="foodId" />
+        <div class="form-grid">
+          <label class="full"><span data-i18n="foodName">Lebensmittel / Gericht</span><input id="foodName" required maxlength="80" placeholder="z. B. Hähnchen mit Reis" /></label>
+          <label><span data-i18n="meal">Mahlzeit</span><select id="foodMeal"><option value="breakfast" data-i18n="breakfast">Frühstück</option><option value="lunch" data-i18n="lunch">Mittagessen</option><option value="dinner" data-i18n="dinner">Abendessen</option><option value="snacks" data-i18n="snacks">Snacks</option></select></label>
+          <label><span data-i18n="status">Status</span><select id="foodStatus"><option value="eaten" data-i18n="eaten">Gegessen</option><option value="planned" data-i18n="planned">Geplant</option></select></label>
+          <label><span data-i18n="portion">Portion</span><input id="foodPortion" maxlength="30" placeholder="250 g" /></label>
+          <label><span data-i18n="calories">Kalorien</span><input id="foodCalories" type="number" min="0" max="10000" required placeholder="0" /></label>
+          <label><span data-i18n="protein">Protein (g)</span><input id="foodProtein" type="number" min="0" max="1000" step="0.1" placeholder="0" /></label>
+          <label><span data-i18n="carbs">Kohlenhydrate (g)</span><input id="foodCarbs" type="number" min="0" max="1000" step="0.1" placeholder="0" /></label>
+          <label><span data-i18n="fat">Fett (g)</span><input id="foodFat" type="number" min="0" max="1000" step="0.1" placeholder="0" /></label>
+          <label><span data-i18n="sugar">Zucker (g)</span><input id="foodSugar" type="number" min="0" max="1000" step="0.1" placeholder="0" /></label>
+          <label><span data-i18n="fiber">Ballaststoffe (g)</span><input id="foodFiber" type="number" min="0" max="1000" step="0.1" placeholder="0" /></label>
+          <label><span data-i18n="salt">Salz (g)</span><input id="foodSalt" type="number" min="0" max="100" step="0.1" placeholder="0" /></label>
+        </div>
+        <div class="dialog-actions"><button type="button" class="secondary-btn close-dialog" data-i18n="cancel">Abbrechen</button><button type="submit" class="primary-btn" data-i18n="saveEntry">Eintrag speichern</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="goalsDialog" class="app-dialog small-dialog">
+      <form id="goalsForm" method="dialog">
+        <div class="dialog-header"><div><span class="card-kicker" data-i18n="personal">PERSÖNLICH</span><h2 data-i18n="adjustGoals">Tagesziele anpassen</h2></div><button type="button" class="close-goals icon-btn">×</button></div>
+        <div class="form-grid goals-form">
+          <label><span data-i18n="calories">Kalorien</span><input id="goalCaloriesInput" type="number" min="500" max="10000" required /></label>
+          <label><span data-i18n="waterLiters">Wasser (Liter)</span><input id="goalWaterInput" type="number" min="0.5" max="10" step="0.1" required /></label>
+          <label><span data-i18n="protein">Protein (g)</span><input id="goalProteinInput" type="number" min="0" max="1000" required /></label>
+          <label><span data-i18n="carbs">Kohlenhydrate (g)</span><input id="goalCarbsInput" type="number" min="0" max="1000" required /></label>
+          <label><span data-i18n="fat">Fett (g)</span><input id="goalFatInput" type="number" min="0" max="1000" required /></label>
+          <label><span data-i18n="sugar">Zucker (g)</span><input id="goalSugarInput" type="number" min="0" max="1000" required /></label>
+        </div>
+        <div class="dialog-actions"><button type="button" class="secondary-btn close-goals" data-i18n="cancel">Abbrechen</button><button type="submit" class="primary-btn" data-i18n="saveGoals">Ziele speichern</button></div>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
